@@ -158,6 +158,10 @@ def create_migration_interface() -> gr.Interface:
         
         explanation = "**Conversion Changes:**\n" + "\n".join(explanation_parts) if explanation_parts else "No direct conversions needed."
         
+        # Prevent accidental 'test.test.beforeEach' due to repeated replacement
+        if "test.test.beforeEach" in converted_code:
+            converted_code = converted_code.replace("test.test.beforeEach", "test.beforeEach")
+            explanation_parts.append("• Fixed accidental 'test.test.beforeEach' to 'test.beforeEach'")
         return converted_code, explanation
     
     def _convert_advanced_patterns(code: str) -> Tuple[str, List[str]]:
